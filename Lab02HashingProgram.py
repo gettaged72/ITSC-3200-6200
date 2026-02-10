@@ -3,6 +3,11 @@ import hashlib
 import json
 import sys
 
+"""
+Name: Ryan Kimani
+ID: 801403086
+"""
+
 HASH_TABLE_FILE = "hash_table.json"
 ALGO_NAME = "sha256"
 
@@ -80,7 +85,7 @@ def validate_hash():
 
     directory = norm_path(directory)
 
-    # Optional: warn if verifying a different directory than originally hashed
+    # warn if verifying a different directory than originally hashed
     if stored_dir and directory != norm_path(stored_dir):
         print(f"Warning: hash table was generated for {stored_dir}, but you are verifying {directory}.")
 
@@ -102,10 +107,10 @@ def validate_hash():
         else:
             print(f"{file_path} has been deleted.")
 
-    # Check new files (and detect rename if bonus)
+    # Check new files
     for file_path, new_hash in current_hashes.items():
         if file_path not in stored_files:
-            # BONUS: rename detection by hash match
+            #  rename detection by hash match
             if new_hash in old_hash_to_path and old_hash_to_path[new_hash] not in current_hashes:
                 old_path = old_hash_to_path[new_hash]
                 print(f"File name change detected, {old_path} has been renamed to {file_path}.")
