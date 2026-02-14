@@ -1,53 +1,53 @@
 # File Integrity Verification Tool (SHA-256)
 
-A lightweight Python CLI tool that generates and verifies **SHA-256 hashes** for all files in a directory to detect:
-- ✅ **Modified files** (hash mismatch)
-- ✅ **Deleted files**
-- ✅ **Newly added files**
-- ✅ **Renamed files** (basic rename detection using matching hashes)
+A Python CLI tool that creates a baseline of **SHA-256 hashes** for every file in a directory, then verifies the directory later to detect:
 
-This is a simple example of **file integrity monitoring**, a common cybersecurity technique used to detect tampering and unexpected changes on systems.
+- ✅ Modified files (hash mismatch)
+- ✅ Deleted files
+- ✅ Newly added files
+- ✅ Renamed files (basic rename detection using matching hashes)
 
----
-
-## Why this matters (Security context)
-Hashing is used in cybersecurity to verify integrity and detect unauthorized changes. Tools like this help support:
-- File integrity monitoring (FIM)
-- Incident response validation (has anything changed?)
-- Detecting tampering on sensitive directories
-- Compliance / auditing checks
+This is a simple example of **File Integrity Monitoring (FIM)** — a common cybersecurity technique used to detect tampering and unexpected changes.
 
 ---
 
 ## Features
-- **Generate a baseline hash table** for a target directory
-- **Verify current files** against the stored baseline
-- Outputs results for:
-  - Valid/invalid hashes
-  - Deleted files
-  - Added files
-  - Renamed files (same hash, different path)
-- Stores results in a JSON file: `hash_table.json`
+- Recursively hashes all files in a target directory
+- Saves results to `hash_table.json`
+- Verifies current directory state against the saved baseline
+- Skips hashing `hash_table.json` if it exists inside the target directory
+- Normalizes file paths (absolute + normalized) for consistent comparisons
 
 ---
 
 ## Requirements
-- Python 3.8+ (works with standard library only)
-
-No external libraries needed.
+- Python 3.8+
+- Standard library only (no external packages)
 
 ---
 
-## How it works
-1. The program walks a directory recursively (`os.walk`)
-2. Each file is hashed using **SHA-256**
-3. Hashes are stored in `hash_table.json`
-4. Verification re-hashes files and compares results to the baseline
+## Project Structure
+- `Lab02HashingProgram.py` — main program (hashing + verification menu)
+- `README.md` — project documentation
+- `hash_table.json` — generated output (created after option 1)
+
+---
+
+## How It Works
+1. Walks the directory using `os.walk()`
+2. Hashes each file using SHA-256 in chunks (handles large files)
+3. Stores baseline hashes in `hash_table.json`
+4. Verification re-hashes files and compares results to baseline:
+   - Same hash → valid
+   - Different hash → modified
+   - Missing from current scan → deleted
+   - New in current scan → added
+   - Same hash but different path → renamed (basic detection)
 
 ---
 
 ## Usage
 
-### 1) Run the program
+### Run the program
 ```bash
-python main.py
+python Lab02HashingProgram.py
